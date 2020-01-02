@@ -21,9 +21,8 @@ def do_cat(filename):
       print(line, end="")
   except:
     print(f'{filename} is not file');
-  
-
-  data.close()
+  else:
+    data.close()
 
 if __name__ == "__main__":
   main()
