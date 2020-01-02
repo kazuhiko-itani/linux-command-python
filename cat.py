@@ -4,7 +4,7 @@ def main():
   args = sys.argv
 
   if len(args) < 2:
-    print(f'{args[0]}: file name not given');
+    print(f'{args[0]}: file name not given')
     return
 
   for i in range(len(args)):

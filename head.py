@@ -10,9 +10,11 @@ options:
 import sys
 from docopt import docopt
 
+DEFAULT_LINES = 10
+
 def main():
   args = docopt(__doc__)
-  lines = int(args['<N>']) if args['<N>'] != None else 10
+  lines = int(args['<N>']) if args['<N>'] != None else DEFAULT_LINES
 
   if len(args['<file>']) == 0:
     for i in range(lines):
