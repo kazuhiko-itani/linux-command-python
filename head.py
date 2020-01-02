@@ -1,29 +1,36 @@
+"""Diplay the beginning of lines
+
+usage: head.py [-h] [-n <N> | --lines <N>] [<file>...]
+
+options:
+    -h           show this help message and exit
+    -n, --lines  number of rows to display
+"""
+
 import sys
+from docopt import docopt
 
 def main():
-  args = sys.argv
+  args = docopt(__doc__)
+  lines = int(args['<N>']) if args['<N>'] != None else 10
 
-  if len(args) < 2:
-    sys.stderr.write(f'Usage: {args[0]} n [file file...]\n')
-    return
-
-  if len(args) == 2:
-    for i in range(int(args[1])):
+  if len(args['<file>']) == 0:
+    for i in range(lines):
       print(input())
 
   else:
-    for i in range(len(args) - 2):
+    for i in range(len(args['<file>'])):
       try:
-        data = open(args[i + 2])
+        data = open(args['<file>'][i])
 
         for j, line in enumerate(data):
-          if j >= int(args[1]):
+          if j >= lines:
             break
 
           print(line, end="")
 
       except:
-        sys.stderr.write(f'{args[i + 2]} is not file')
+        sys.stderr.write(f'{args["<file>"][i]} is not file')
 
       else:
         data.close()
