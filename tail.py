@@ -1,17 +1,28 @@
-import sys
+"""Diplay the end of lines
+  
+usage: tail.py [-h] [-n <N> | --lines <N>] <file>
 
-LINES = 10
+options:
+    -h           show this help message and exit
+    -n, --lines  number of rows to display
+"""
+
+import sys
+from docopt import docopt
+
+DEFAULT_LINES = 10
 
 def main():
-  args = sys.argv
+  args = docopt(__doc__)
+  lines = int(args['<N>']) if args['<N>'] != None else DEFAULT_LINES
 
-  if len(args) != 2:
-    sys.stderr.write(f'{args[0]}: file name not given') 
+  if args['<file>'] == None:
+    sys.stderr.write(f'{__file__}: file name not given') 
     return
 
-  tail(args[1])
+  tail(args['<file>'], lines)
 
-def tail(filename):
+def tail(filename, lines):
   dataList = []
   count = 0
   readLines = 0
@@ -19,23 +30,23 @@ def tail(filename):
   try:
     data = open(filename, "r")
 
+    # store data
     for line in data:
-      if readLines > LINES and count > LINES:
-        count = 0
+      if readLines > lines:
         dataList[count] = line
-
-      elif readLines > LINES and count <= LINES:
-        dataList[count] = line
-
       else:
         dataList.append(line)
 
       count += 1
       readLines += 1
 
-    if readLines > LINES:
-      for i in range(LINES):
-        if count >= LINES:
+      if count > lines:
+        count = 0
+
+    # display data
+    if readLines > lines:
+      for i in range(lines):
+        if count >= lines:
           count = 0
         print(dataList[count], end="")
         count += 1
@@ -44,12 +55,10 @@ def tail(filename):
       for i in range(len(dataList)):
         print(dataList[i], end="")
 
-  except Exception as e:
-    print(e)
+  except:
     sys.stderr.write(f'{filename} is not file')
   else:
     data.close()
-    return dataList
 
 if __name__ == "__main__":
   main()
